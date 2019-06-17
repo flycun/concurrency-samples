@@ -3,7 +3,7 @@ package com.music;
 public class UnsafeSequence {
     private int count;
 
-    public void calculate() {
+    public void increamentCount() {
         count += 1;
     }
 

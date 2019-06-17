@@ -20,10 +20,10 @@ public class UnsafeSequenceTest
     public void givenMultiThread_whenNonSyncMethod() throws InterruptedException
     {
         ExecutorService service = Executors.newFixedThreadPool(3);
-        UnsafeSequence unsafeSequence = new UnsafeSequence();
 
+        UnsafeSequence unsafeSequence = new UnsafeSequence();
         IntStream.range(0, 1000)
-                .forEach(count -> service.submit(unsafeSequence::calculate));
+                .forEach(count -> service.submit(unsafeSequence::increamentCount));
         service.awaitTermination(100, TimeUnit.MILLISECONDS);
 
         assertEquals(1000, unsafeSequence.getCount());
