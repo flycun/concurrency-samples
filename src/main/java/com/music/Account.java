@@ -1,16 +1,31 @@
 package com.music;
 
+import java.util.concurrent.locks.Lock;
+
 class Account {
     private int balance;
 
-    void transfer(Account target, int money) {
-        synchronized (this) { //锁定转出账户
-            synchronized (target){//锁定转入账户
-                if (this.balance > money) {
-                    this.balance -= money;
-                    target.balance += money;
+    Lock lock;
+    public boolean transfer(Account target, int amount) {
+        while (true) {
+            if (this.lock.tryLock()) {
+                try {
+                    if (target.lock.tryLock()) {
+                        try {
+                            if (this.balance > amount) {
+                                this.balance -= amount;
+                                target.balance += amount;
+                                return true;
+                            }
+                        } finally {
+                            target.lock.unlock();
+                        }
+                    }
+                } finally {
+                    this.lock.unlock();
                 }
             }
+            // if(超时) return false;
         }
     }
 }
