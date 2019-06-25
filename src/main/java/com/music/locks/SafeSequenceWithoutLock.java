@@ -11,12 +11,6 @@ public class SafeSequenceWithoutLock {
     }
     
     public void increamentCount() {
-        while(true) {
-            int existingValue = getCount();
-            int newValue = existingValue + 1;
-            if(counter.compareAndSet(existingValue, newValue)) {
-                return;
-            }
-        }
+       counter.incrementAndGet();
     }
 }
